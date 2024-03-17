@@ -210,24 +210,6 @@ GROUP BY
 ORDER BY
     1;
 
-SELECT
-    ID,
-    VISIT_DATE,
-    PEOPLE
-FROM
-    (
-        SELECT
-            ID,
-            VISIT_DATE,
-            PEOPLE LAG(ID) OVER (ORDER BY ID) AS PREV_VALUE
-        FROM
-            STADIUM
-        WHERE
-            PEOPLE >= 100
-    )
-WHERE
-    PREV_VALUE = ID - 1;
-
 -- Third Hard SQL Problem on LeetCode: https://leetcode.com/problems/human-traffic-of-stadium/description/.
 WITH CTE AS (
     SELECT
