@@ -254,3 +254,84 @@ WHERE
 ORDER BY
     1;
 
+/* Write a PL/SQL block that prints the first_name, their salary, their manager's last_name
+and their department name for the first 10 employees sorted by the salary descendingly using cursors. */
+DECLARE
+    CURSOR CUR IS (
+        SELECT
+            E.FIRST_NAME                               AS FNAME,
+            E.SALARY                                   AS PAY,
+            M.LAST_NAME                                AS LNAME,
+            D.DEPARTMENT_NAME                          AS DNAME,
+            ROW_NUMBER() OVER (ORDER BY E.SALARY DESC) SAL
+        FROM
+            EMPLOYEES   E
+            JOIN EMPLOYEES M
+            ON (E.MANAGER_ID = M.EMPLOYEE_ID)
+            JOIN DEPARTMENTS D
+            ON (E.DEPARTMENT_ID = D.DEPARTMENT_ID)
+    );
+BEGIN
+    FOR REC IN CUR LOOP
+        EXIT WHEN REC.SAL > 10;
+        DBMS_OUTPUT.PUT_LINE('First Name: '
+                             ||REC.FNAME
+                             ||', salary: '
+                             ||REC.PAY
+                             || ', last name of the manager: '
+                             ||REC.LNAME
+                             ||', department name: '
+                             ||REC.DNAME
+                             ||'.');
+    END LOOP;
+END;
+/
+
+/* Write a PL/SQL block that declares a custom exception and creates a table named "MyTestTable"
+with the columns id(primary key) and name(not null). The block tries to delete all the records
+in the newly created table but if there are no records to delete it raises an exception
+with the error message "There are no records to delete". */
+
+DECLARE
+    SZ NUMBER;
+    EX EXCEPTION;
+    PRAGMA EXCEPTION_INIT(EX, -20002);
+BEGIN
+    SELECT
+        COUNT(*) INTO SZ
+    FROM
+        MYTESTTABLE;
+    IF SZ = 0 THEN
+        RAISE EX;
+    ELSE
+        DELETE FROM MYTESTTABLE;
+    END IF;
+EXCEPTION
+    WHEN EX THEN
+        DBMS_OUTPUT.PUT_LINE('Error '
+                             ||SQLCODE
+                             ||': There are no records to delete.');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE(SQLERRM);
+END;
+/
+
+-- Implement Fibonacci using a function recursively:
+CREATE OR REPLACE FUNCTION FIBONACCI (
+    N NUMBER
+) RETURN NUMBER IS
+BEGIN
+    IF N = 0 THEN
+        RETURN 0;
+    ELSIF N = 1 THEN
+        RETURN 1;
+    ELSE
+        RETURN FIBONACCI(N-1) + FIBONACCI(N-2);
+    END IF;
+END;
+/
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(FIBONACCI(&NUM));
+END;
+/
