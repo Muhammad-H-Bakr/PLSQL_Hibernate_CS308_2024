@@ -1,7 +1,7 @@
 -- Create a table:
 BEGIN
-    EXECUTE IMMEDIATE 'create table temp (
-id number primary key
+    EXECUTE IMMEDIATE 'CREATE TABLE TEMP (
+    ID NUMBER PRIMARY KEY
 )';
 END;
 /
