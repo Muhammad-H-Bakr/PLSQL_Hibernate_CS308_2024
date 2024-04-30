@@ -63,7 +63,7 @@
 --  0 Check each table contains data records in each as follows:
 --		SELECT COUNT(*) FROM <table>;
 --
---	A2_Guest              37
+--	  A2_Guest              37
 --  A2_Guide              57
 --  A2_Room_Type           4
 --  A2_Room               49
