@@ -1,12 +1,21 @@
 package com.sci.dao;
 
+import com.sci.criteria.FilterQuery;
+import com.sci.criteria.Operator;
 import com.sci.models.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 @SuppressWarnings("ALL")
 public class DBManagement {
@@ -106,6 +115,7 @@ public class DBManagement {
         }
 
     }
+
     public static class DBPerson {
 
         public List<Person> get() {
@@ -202,7 +212,39 @@ public class DBManagement {
         }
 
     }
+
     public static class DBEmployee {
+        public List<Employee> getByFilter(List<FilterQuery> filterQueries) {
+
+            try (Session session = DBConfig.SESSION_FACTORY.openSession()) {
+
+                CriteriaBuilder cb = session.getCriteriaBuilder();
+                CriteriaQuery<Employee> cr = cb.createQuery(Employee.class);
+                Root<Employee> root = cr.from(Employee.class);
+
+                Predicate[] predicates = new Predicate[filterQueries.size()];
+                for (int i = 0; i < filterQueries.size(); i++) {
+                    if (filterQueries.get(i).getOp() == Operator.EQ) {
+                        predicates[i] = cb.equal(root.get(filterQueries.get(i).getAttributeName()),
+                                filterQueries.get(i).getAttributeValue());
+                    } else if (filterQueries.get(i).getOp() == Operator.GT) {
+                        predicates[i] = cb.greaterThan(root.get(filterQueries.get(i).getAttributeName()),
+                                (Comparable) filterQueries.get(i).getAttributeValue());
+                    } else if (filterQueries.get(i).getOp() == Operator.LT) {
+                        predicates[i] = cb.lessThan(root.get(filterQueries.get(i).getAttributeName()),
+                                (Comparable) filterQueries.get(i).getAttributeValue());
+                    }
+                }
+                cr.select(root).where(predicates);
+                Query<Employee> query = session.createQuery(cr);
+                return query.getResultList();
+
+            } catch (Exception ex) {
+                System.err.println(ex.getMessage());
+            }
+
+            return new ArrayList<>();
+        }
 
         public List<Employee> get() {
 
@@ -590,6 +632,7 @@ public class DBManagement {
         }
 
     }
+
     public static class DBJob {
 
         public List<Job> get() {
@@ -686,6 +729,7 @@ public class DBManagement {
         }
 
     }
+
     public static class DBCountry {
 
         public List<Country> get() {
@@ -782,6 +826,7 @@ public class DBManagement {
         }
 
     }
+
     public static class DBDepartment {
 
         public List<Department> get() {
