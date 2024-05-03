@@ -16,13 +16,13 @@ public class TesterApp {
         List<FilterQuery> filters = new ArrayList<>();
         Date hireDate = Date.valueOf("2010-01-01"); //YYYY-MM-DD. (Numeric)
         filters.add(new FilterQuery("salary", 5000,
-                Operator.GT));
+                Operator.GreaterThan));
         filters.add(new FilterQuery("firstName", "Steven",
-                Operator.EQ));
+                Operator.Equal));
         filters.add(new FilterQuery("hireDate", hireDate,
-                Operator.LT));
+                Operator.LessThan));
         filters.add(new FilterQuery("jobId", "AD_PRES",
-                Operator.EQ));
+                Operator.Equal));
         List<Employee> emps = emp.getByFilter(filters);
         System.out.println("EmployeeId, FirstName, LastName" );
         for (Employee employee : emps) {

@@ -1,7 +1,6 @@
 package com.sci.dao;
 
 import com.sci.criteria.FilterQuery;
-import com.sci.criteria.Operator;
 import com.sci.models.*;
 
 import java.sql.Date;
@@ -217,24 +216,99 @@ public class DBManagement {
         public List<Employee> getByFilter(List<FilterQuery> filterQueries) {
 
             try (Session session = DBConfig.SESSION_FACTORY.openSession()) {
-
+                // To be edited in other relations CRUD OPs:
                 CriteriaBuilder cb = session.getCriteriaBuilder();
                 CriteriaQuery<Employee> cr = cb.createQuery(Employee.class);
                 Root<Employee> root = cr.from(Employee.class);
 
                 Predicate[] predicates = new Predicate[filterQueries.size()];
                 for (int i = 0; i < filterQueries.size(); i++) {
-                    if (filterQueries.get(i).getOp() == Operator.EQ) {
-                        predicates[i] = cb.equal(root.get(filterQueries.get(i).getAttributeName()),
-                                filterQueries.get(i).getAttributeValue());
-                    } else if (filterQueries.get(i).getOp() == Operator.GT) {
-                        predicates[i] = cb.greaterThan(root.get(filterQueries.get(i).getAttributeName()),
-                                (Comparable) filterQueries.get(i).getAttributeValue());
-                    } else if (filterQueries.get(i).getOp() == Operator.LT) {
-                        predicates[i] = cb.lessThan(root.get(filterQueries.get(i).getAttributeName()),
-                                (Comparable) filterQueries.get(i).getAttributeValue());
+                    switch (filterQueries.get(i).getOp()) {
+                        case Equal:
+                            predicates[i] =
+                                    cb.equal(root.get(filterQueries.get(i).
+                                                    getAttributeName()),
+                                            filterQueries.get(i).getAttributeValue());
+                            break;
+                        case GreaterThan:
+                            predicates[i] =
+                                    cb.greaterThan(root.get(filterQueries.
+                                                    get(i).getAttributeName()),
+                                            (Comparable) filterQueries.get(i).
+                                                    getAttributeValue());
+                            break;
+                        case LessThan:
+                            predicates[i] =
+                                    cb.lessThan(root.get(filterQueries.get(i).
+                                                    getAttributeName()),
+                                            (Comparable) filterQueries.get(i).
+                                                    getAttributeValue());
+                            break;
+                        case NotEqual:
+                            predicates[i] =
+                                    cb.notEqual(root.get(filterQueries.get(i).
+                                                    getAttributeName()),
+                                            (Comparable) filterQueries.get(i).
+                                                    getAttributeValue());
+                            break;
+                        case IsNull:
+                            predicates[i] =
+                                    cb.isNull(root.get(filterQueries.get(i).
+                                            getAttributeName())
+                                    );
+                            break;
+                        case GreaterThanOrEqual:
+                            predicates[i] =
+                                    cb.greaterThanOrEqualTo(
+                                            root.get(filterQueries.get(i).
+                                                    getAttributeName()),
+                                            (Comparable) filterQueries.get(i).
+                                                    getAttributeValue());
+                            break;
+                        case LessThanOrEqual:
+                            predicates[i] =
+                                    cb.lessThanOrEqualTo(
+                                            root.get(filterQueries.get(i).
+                                                    getAttributeName()),
+                                            (Comparable) filterQueries.get(i).
+                                                    getAttributeValue());
+                            break;
+                        case Like:
+                            predicates[i] =
+                                    cb.like(root.get(filterQueries.get(i).
+                                                    getAttributeName()),
+                                            filterQueries.get(i).
+                                                    getAttributeValue().toString());
+                            break;
+                        case Between:
+                            List<Comparable> values =
+                                    (List<Comparable>) filterQueries.get(i).
+                                            getAttributeValue();
+                            predicates[i] =
+                                    cb.between(root.get(filterQueries.get(i).
+                                                    getAttributeName()),
+                                            values.get(0), values.get(1));
+                            break;
+                        case In:
+                            List<Object> inQuery = (List<Object>)
+                                    filterQueries.get(i).getAttributeValue();
+                            predicates[i] =
+                                    root.get(filterQueries.get(i).getAttributeName()).
+                                            in(inQuery);
+                            break;
+                        default:
+                            break;
                     }
                 }
+//                // Adding DISTINCT:
+//                cr.distinct(true);
+//
+//                //Sorting by something: [use desc instead of asc for order if needed]:
+//                cr.orderBy(cb.asc(root.get("hireDate")));
+//
+//                //By Default takes thier conjuction, this is union:
+//                Predicate pr = cb.or(predicates);
+//                cr.select(root).where(pr);
                 cr.select(root).where(predicates);
                 Query<Employee> query = session.createQuery(cr);
                 return query.getResultList();
