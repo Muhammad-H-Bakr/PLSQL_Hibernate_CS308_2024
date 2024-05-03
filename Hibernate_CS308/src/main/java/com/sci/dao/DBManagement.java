@@ -277,8 +277,8 @@ public class DBManagement {
                             predicates[i] =
                                     cb.like(root.get(filterQueries.get(i).
                                                     getAttributeName()),
-                                            filterQueries.get(i).
-                                                    getAttributeValue().toString());
+                                            "%" + (String) (filterQueries.get(i).
+                                                    getAttributeValue()) + "%");
                             break;
                         case Between:
                             List<Comparable> values =
