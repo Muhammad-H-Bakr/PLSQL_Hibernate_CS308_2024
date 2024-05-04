@@ -5,21 +5,28 @@ import com.sci.criteria.Operator;
 import com.sci.dao.DBConfig;
 import com.sci.dao.DBManagement;
 import com.sci.models.*;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TesterApp {
     public static void main(String[] args) {
         DBManagement.DBEmployee emp = new DBManagement.DBEmployee();
         List<FilterQuery> filters = new ArrayList<>();
-        filters.add(new FilterQuery("lastName", "e",
-                Operator.Like));
-        filters.add(new FilterQuery("lastName", "a",
-                Operator.Like));
+
+        // Q13, Les02 Oracle SQL Slides:
+        filters.add(new FilterQuery("jobId", "SA_REP",
+                Operator.Equal));
+        filters.add(new FilterQuery("jobId", "ST_CLERK",
+                Operator.Equal));
+        filters.add(new FilterQuery("salary", Arrays.asList(2500, 3500, 7000),
+                Operator.In));
         List<Employee> emps = emp.getByFilter(filters);
-        System.out.println("LastName");
+        System.out.println("LastName, JobId, Salary");
         for (Employee employee : emps) {
-            System.out.println(employee.getLastName());
+            System.out.println(employee.getLastName() + " " + employee.getJobId() + " "
+                    + employee.getSalary());
         }
         DBConfig.shutdown();
     }

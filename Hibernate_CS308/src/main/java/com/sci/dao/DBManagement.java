@@ -290,12 +290,15 @@ public class DBManagement {
                                                     getAttributeName()),
                                             values.get(0), values.get(1));
                             break;
+                        //Default In pattern:
                         case In:
                             List<Object> inQuery = (List<Object>)
                                     filterQueries.get(i).getAttributeValue();
                             predicates[i] =
                                     root.get(filterQueries.get(i).getAttributeName()).
                                             in(inQuery);
+                            //For the question we just need the negation, Delete later:
+                            predicates[i] = predicates[i].not();
                             break;
                         default:
                             break;
@@ -303,13 +306,20 @@ public class DBManagement {
                 }
 
                 //Sorting by something: [use desc instead of asc for order if needed]:
-//                cr.orderBy(cb.asc(root.get("hireDate")));
+                cr.orderBy(cb.asc(root.get("salary")));
 
                 //By Default takes thier conjuction, this is union:
 //                Predicate pr = cb.or(predicates);
 //                cr.select(root).where(pr);
 
-                cr.select(root).where(predicates);
+                //This is their default, We need a more complex query
+//                cr.select(root).where(predicates);
+
+                //What the question needs is a more complex query:
+                Predicate pred = cb.or(predicates[0], predicates[1]);
+                pred = cb.and(pred, predicates[2]);
+                cr.select(root).where(pred);
+
                 Query<Employee> query = session.createQuery(cr);
                 return query.getResultList();
 

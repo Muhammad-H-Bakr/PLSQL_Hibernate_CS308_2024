@@ -18,7 +18,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NoArgsConstructor
 @AllArgsConstructor
-@SequenceGenerator(name = "departments_gen", sequenceName = "departments_seq", allocationSize = 1)
+@SequenceGenerator(name = "departments_gen", sequenceName = "departments_seq",
+        allocationSize = 1)
 public class Department implements Serializable {
 
     private static final long serialVersionUID = 4396093107304957078L;
