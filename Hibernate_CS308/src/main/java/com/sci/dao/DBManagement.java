@@ -274,6 +274,7 @@ public class DBManagement {
                                                     getAttributeValue());
                             break;
                         case Like:
+                            /* <===> Where attribute like '%string%', can be cutomized. */
                             predicates[i] =
                                     cb.like(root.get(filterQueries.get(i).
                                                     getAttributeName()),
@@ -300,15 +301,14 @@ public class DBManagement {
                             break;
                     }
                 }
-//                // Adding DISTINCT:
-//                cr.distinct(true);
-//
-//                //Sorting by something: [use desc instead of asc for order if needed]:
+
+                //Sorting by something: [use desc instead of asc for order if needed]:
 //                cr.orderBy(cb.asc(root.get("hireDate")));
-//
-//                //By Default takes thier conjuction, this is union:
+
+                //By Default takes thier conjuction, this is union:
 //                Predicate pr = cb.or(predicates);
 //                cr.select(root).where(pr);
+
                 cr.select(root).where(predicates);
                 Query<Employee> query = session.createQuery(cr);
                 return query.getResultList();
