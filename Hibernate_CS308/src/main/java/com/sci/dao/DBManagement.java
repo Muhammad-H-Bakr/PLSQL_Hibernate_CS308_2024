@@ -290,7 +290,6 @@ public class DBManagement {
                                                     getAttributeName()),
                                             values.get(0), values.get(1));
                             break;
-                        //Default In pattern:
                         case In:
                             List<Object> inQuery = (List<Object>)
                                     filterQueries.get(i).getAttributeValue();
@@ -304,11 +303,10 @@ public class DBManagement {
                 }
 
                 //Sorting by something: [use desc instead of asc for order if needed]:
-                cr.orderBy(cb.asc(root.get("salary")));
+//                cr.orderBy(cb.asc(root.get("salary")));
 
                 //By Default takes thier conjuction, this is union:
-//                Predicate pr = cb.or(predicates);
-//                cr.select(root).where(pr);
+//                cr.select(root).where(cb.or(predicates));
 
                //This is their default, We need a more complex query
 //                cr.select(root).where(predicates);
