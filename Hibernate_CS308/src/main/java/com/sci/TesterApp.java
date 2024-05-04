@@ -16,10 +16,8 @@ public class TesterApp {
         List<FilterQuery> filters = new ArrayList<>();
 
         // Q13, Les02 Oracle SQL Slides:
-        filters.add(new FilterQuery("jobId", "SA_REP",
-                Operator.Equal));
-        filters.add(new FilterQuery("jobId", "ST_CLERK",
-                Operator.Equal));
+        filters.add(new FilterQuery("jobId", Arrays.asList("SA_REP", "ST_CLERK"),
+                Operator.In));
         filters.add(new FilterQuery("salary", Arrays.asList(2500, 3500, 7000),
                 Operator.In));
         List<Employee> emps = emp.getByFilter(filters);

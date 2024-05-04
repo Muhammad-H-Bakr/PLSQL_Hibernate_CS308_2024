@@ -22,6 +22,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NoArgsConstructor
 @AllArgsConstructor
+
 //Sequencing:
 @SequenceGenerator(name = "employees_gen", sequenceName = "employees_seq", allocationSize = 1)
 public class Employee implements Serializable {

@@ -26,5 +26,6 @@
         <mapping class="com.sci.models.JobHistory"/>
         <mapping class="com.sci.models.Person"/>
         <mapping class="com.sci.models.Car"/>
+
     </session-factory>
 </hibernate-configuration>

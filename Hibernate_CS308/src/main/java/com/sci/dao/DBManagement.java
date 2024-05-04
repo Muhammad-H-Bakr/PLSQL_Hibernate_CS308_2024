@@ -248,7 +248,7 @@ public class DBManagement {
                             predicates[i] =
                                     cb.notEqual(root.get(filterQueries.get(i).
                                                     getAttributeName()),
-                                            (Comparable) filterQueries.get(i).
+                                            filterQueries.get(i).
                                                     getAttributeValue());
                             break;
                         case IsNull:
@@ -297,8 +297,6 @@ public class DBManagement {
                             predicates[i] =
                                     root.get(filterQueries.get(i).getAttributeName()).
                                             in(inQuery);
-                            //For the question we just need the negation, Delete later:
-                            predicates[i] = predicates[i].not();
                             break;
                         default:
                             break;
@@ -312,12 +310,11 @@ public class DBManagement {
 //                Predicate pr = cb.or(predicates);
 //                cr.select(root).where(pr);
 
-                //This is their default, We need a more complex query
+               //This is their default, We need a more complex query
 //                cr.select(root).where(predicates);
 
                 //What the question needs is a more complex query:
-                Predicate pred = cb.or(predicates[0], predicates[1]);
-                pred = cb.and(pred, predicates[2]);
+                Predicate pred = cb.and(predicates[0], predicates[1].not());
                 cr.select(root).where(pred);
 
                 Query<Employee> query = session.createQuery(cr);
