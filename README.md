@@ -4,3 +4,4 @@
 # Working with Hibernate; Recommended SDK (Higher than 19 cause errors): Oracle GraalVM Version 17.
 # Dr. Abdelghany Referenced Repo: https://github.com/abdelghanycu/CS308Spring2022
 # Video For Hibernate Issues: https://drive.google.com/file/d/1xkIdPFiAOrsEnPIavQOpwcz0siVOHOD4/view
+# Video For Hibernate Recap: https://drive.google.com/file/d/1cuxpz5oGpa1iJUYyJE_Q-4Fy4bb8w_GF/view?usp=drive_link
