@@ -257,35 +257,6 @@ public class DBManagement {
                                             getAttributeName())
                                     );
                             break;
-                        case NotNull:
-                            predicates[i] =
-                                    cb.isNotNull(root.get(filterQueries.get(i).
-                                            getAttributeName())
-                                    );
-                            break;
-                        case NotIn:
-                            List<Object> inQuery = (List<Object>)
-                                    filterQueries.get(i).getAttributeValue();
-                            predicates[i] =
-                                    root.get(filterQueries.get(i).getAttributeName()).
-                                            in(inQuery).not();
-                            break;
-                        case NotLike:
-                            predicates[i] =
-                                    cb.like(root.get(filterQueries.get(i).
-                                                    getAttributeName()),
-                                            "%" + (String) (filterQueries.get(i).
-                                                    getAttributeValue()) + "%").not();
-                            break;
-                        case NotBetween:
-                            List<Comparable> values =
-                                    (List<Comparable>) filterQueries.get(i).
-                                            getAttributeValue();
-                            predicates[i] =
-                                    cb.between(root.get(filterQueries.get(i).
-                                                    getAttributeName()),
-                                            values.get(0), values.get(1)).not();
-                            break;
                         case GreaterThanOrEqual:
                             predicates[i] =
                                     cb.greaterThanOrEqualTo(
@@ -311,15 +282,16 @@ public class DBManagement {
                                                     getAttributeValue()) + "%");
                             break;
                         case Between:
-                            values = (List<Comparable>) filterQueries.get(i).
-                                    getAttributeValue();
+                            List<Comparable> values =
+                                    (List<Comparable>) filterQueries.get(i).
+                                            getAttributeValue();
                             predicates[i] =
                                     cb.between(root.get(filterQueries.get(i).
                                                     getAttributeName()),
                                             values.get(0), values.get(1));
                             break;
                         case In:
-                            inQuery = (List<Object>)
+                            List<Object> inQuery = (List<Object>)
                                     filterQueries.get(i).getAttributeValue();
                             predicates[i] =
                                     root.get(filterQueries.get(i).getAttributeName()).
@@ -331,13 +303,17 @@ public class DBManagement {
                 }
 
                 //Sorting by something: [use desc instead of asc for order if needed]:
-                cr.orderBy(cb.asc(root.get("salary")));
+//                cr.orderBy(cb.asc(root.get("salary")));
 
                 //By Default takes thier conjuction, this is union:
 //                cr.select(root).where(cb.or(predicates));
 
-                //This is their default, We need a more complex query
-                cr.select(root).where(predicates);
+               //This is their default, We need a more complex query
+//                cr.select(root).where(predicates);
+
+                //What the question needs is a more complex query:
+                Predicate pred = cb.and(predicates[0], predicates[1].not());
+                cr.select(root).where(pred);
 
                 Query<Employee> query = session.createQuery(cr);
                 return query.getResultList();
