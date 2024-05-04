@@ -19,7 +19,7 @@ public class TesterApp {
         filters.add(new FilterQuery("jobId", Arrays.asList("SA_REP", "ST_CLERK"),
                 Operator.In));
         filters.add(new FilterQuery("salary", Arrays.asList(2500, 3500, 7000),
-                Operator.In));
+                Operator.NotIn));
         List<Employee> emps = emp.getByFilter(filters);
         System.out.println("LastName, JobId, Salary");
         for (Employee employee : emps) {
