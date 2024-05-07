@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Hibernate_CS308/CS308Spring2022.iml" filepath="$PROJECT_DIR$/Hibernate_CS308/CS308Spring2022.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Hibernate Final Quiz/CS308Spring2022 (1).iml" filepath="$PROJECT_DIR$/Hibernate Final Quiz/CS308Spring2022 (1).iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/PLSQL_CS308_2024.iml" filepath="$PROJECT_DIR$/.idea/PLSQL_CS308_2024.iml" />
     </modules>
   </component>
