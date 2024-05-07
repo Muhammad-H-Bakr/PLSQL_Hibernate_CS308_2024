@@ -1,0 +1,30 @@
+-- Create table Author:
+CREATE TABLE AUTHOR(
+    ID NUMBER PRIMARY KEY,
+    NAME VARCHAR2(30) NOT NULL
+);
+
+-- Create table Book:
+CREATE TABLE BOOK (
+    ID NUMBER PRIMARY KEY,
+    NAME VARCHAR2(30) NOT NULL,
+    PUBLISHED_AT DATE NOT NULL
+);
+
+-- They have many to many relationship; introduce a new relation:
+CREATE TABLE AUTH_BOOK(
+    AUTH_ID NUMBER REFERENCES AUTHOR(ID),
+    BOOK_ID NUMBER REFERENCES BOOK(ID),
+    CONSTRAINT ASSOCIATION PRIMARY KEY(AUTH_ID, BOOK_ID)
+);
+
+-- handle values inserted from hibernate here:
+INSERT INTO AUTH_BOOK VALUES (
+    1,
+    1
+);
+
+INSERT INTO AUTH_BOOK VALUES (
+    1,
+    2
+);
