@@ -1,5 +1,5 @@
 # Les = Oracle Slides Lessons, Some lessons might want a table to show the data but I've printed them instead (Simple adjustment needed).
-# Tasks for Group 2 / PLSQL Problems on FB Group.
+# Tasks for Group 2 / PLSQL Problems on FB Group: https://web.facebook.com/groups/1129274145098618
 # When creating triggers: don't use "SYS" schema... to avoid errors (use a default connection).
 # Working with Hibernate; Recommended SDK (Higher than 19 cause errors): Oracle GraalVM Version 17.
 # Dr. Abdelghany Referenced Repo: https://github.com/abdelghanycu/CS308Spring2022
